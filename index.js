@@ -206,9 +206,42 @@ function getUsersProcedure(procedure) {
         });
     });
 }
-function getUserByIdProcedure(id) {
+function getUserByloginProcedure(login) {
     return __awaiter(this, void 0, void 0, function () {
         var result, err_6;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 3, 4, 5]);
+                    return [4 /*yield*/, pool.connect()];
+                case 1:
+                    _a.sent();
+                    return [4 /*yield*/, pool.request()
+                            .input('login', sql.VarChar(50), login)
+                            // .input('password', sql.VarChar(50), password)
+                            // .output('output_parameter', sql.VarChar(50))
+                            .execute('get_user_by_name')];
+                case 2:
+                    result = _a.sent();
+                    console.dir(result.recordset);
+                    return [2 /*return*/, result.recordset[0]];
+                case 3:
+                    err_6 = _a.sent();
+                    console.error(err_6);
+                    return [3 /*break*/, 5];
+                case 4:
+                    if (pool) {
+                        pool.close();
+                    }
+                    return [7 /*endfinally*/];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
+function getUserByIdProcedure(id) {
+    return __awaiter(this, void 0, void 0, function () {
+        var result, err_7;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -226,8 +259,8 @@ function getUserByIdProcedure(id) {
                     console.dir(result.recordset);
                     return [2 /*return*/, result.recordset[0]];
                 case 3:
-                    err_6 = _a.sent();
-                    console.error(err_6);
+                    err_7 = _a.sent();
+                    console.error(err_7);
                     return [3 /*break*/, 5];
                 case 4:
                     if (pool) {
@@ -248,4 +281,5 @@ function getUserByIdProcedure(id) {
 // getUserById('6446846f9387df8ed69a77a1')
 // getUserById('6446856a0419315e2f83b571')
 // getUsersProcedure('get_users')
-getUserByIdProcedure('6446856a0419315e2f83b571');
+// getUserByIdProcedure('6446856a0419315e2f83b571')
+getUserByloginProcedure('john2');

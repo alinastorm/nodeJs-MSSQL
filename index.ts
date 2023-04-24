@@ -11,8 +11,7 @@ const pool = new ConnectionPool({
     options: {
         trustServerCertificate: true
     }
-});
-
+})
 async function createUsersTable(): Promise<any> {
     try {
         await pool.connect();
@@ -108,6 +107,25 @@ async function getUsersProcedure(procedure: string): Promise<any> {
         }
     }
 }
+async function getUserByloginProcedure(login: string): Promise<any> {
+    try {
+        await pool.connect();
+
+        let result = await pool.request()
+            .input('login', sql.VarChar(50), login)
+            // .input('password', sql.VarChar(50), password)
+            // .output('output_parameter', sql.VarChar(50))
+            .execute('get_user_by_name')
+        console.dir(result.recordset);
+        return result.recordset[0];
+    } catch (err) {
+        console.error(err);
+    } finally {
+        if (pool) {
+            pool.close();
+        }
+    }
+}
 async function getUserByIdProcedure(id: string): Promise<any> {
     try {
         await pool.connect();
@@ -138,4 +156,5 @@ async function getUserByIdProcedure(id: string): Promise<any> {
 // getUserById('6446846f9387df8ed69a77a1')
 // getUserById('6446856a0419315e2f83b571')
 // getUsersProcedure('get_users')
-getUserByIdProcedure('6446856a0419315e2f83b571')
+// getUserByIdProcedure('6446856a0419315e2f83b571')
+getUserByloginProcedure('john2')
